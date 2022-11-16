@@ -1,1 +1,1 @@
-Please use the steam.cvs file. This will not work for any other files.
+Please use the steam.cvs file located in the Data stuff directory. This will not work for any other files.

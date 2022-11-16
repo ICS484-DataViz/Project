@@ -1,14 +1,13 @@
 TESTER = document.getElementById('myDiv');
 const inputFile = document.querySelector('#file');
-const t = [];
-const dummy = [];
+const t = []; // holds the total for each genres
+const dummy = []; // temp holder
 
 
 inputFile.addEventListener("change", async () => {
     const excelFile = inputFile.files[0]
     // Do all the work in here
     dfd.readExcel(excelFile).then((df) => {
-       // df.head().print();
        const tittle = df.name.getColumnData;
        const genre = df.genres.getColumnData;
        const total = [];
@@ -28,7 +27,7 @@ inputFile.addEventListener("change", async () => {
        const uniqGenres = new Set(dummy); // gets the uniq genres, total 29 uniq genres
        
 
-       uniqGenres.forEach(doWork);
+       uniqGenres.forEach(doWork); // totals up each genres
        const x = [];
        const y = [];
        for (let a = 0 ; a < t.length; a++) {
@@ -53,51 +52,16 @@ inputFile.addEventListener("change", async () => {
 
        const data = [trace1];
         Plotly.newPlot('myDiv', data, layout);
-
-       //const t = dummy.filter(item => item === uniqGenres);
-      // console.log(t);
-
     })
 })
 
-const a = 2;
-const b = 3;
-
-const answer = (a, b) => {
-    console.log(a);
-    console.log(b);
-
-};
 
 const doWork = (value) => {
-   const temp = dummy.filter(item => item === value);
-   const name = temp[0];
-   const data = {};
-   data[name] = temp.length;
+   const temp = dummy.filter(item => item === value); // find the all genre === value from dummy
+   const name = temp[0]; // gets the name of that genre
+   const data = {}; // temp holder
+   data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
    t.push(data);
 };
 
-
-var trace1 = {
-    x: [1, 2, 3, 4],
-    y: [10, 15, 13, 17],
-    mode: 'markers',
-    type: 'scatter'
-  };
-  
-  var trace2 = {
-    x: [2, 3, 4, 5],
-    y: [16, 5, 11, 9],
-    mode: 'lines',
-    type: 'scatter'
-  };
-  
-  var trace3 = {
-    x: [1, 2, 3, 4],
-    y: [12, 9, 15, 12],
-    mode: 'lines+markers',
-    type: 'scatter'
-  };
-  
-  var data = [trace1, trace2, trace3];
   

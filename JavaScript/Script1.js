@@ -8,11 +8,40 @@ const dummy = []; // temp holder
 inputFile.addEventListener("change", async () => {
     const excelFile = inputFile.files[0]
     // Do all the work in here
-    dfd.readExcel(excelFile).then((df) => {
+    dfd.readCSV(excelFile).then((df) => {
         const title = df.name.getColumnData;
+        const id = df.appid.getColumnData;
         const genre = df.genres.getColumnData;
+        const releaseDate = df.release_date.getColumnData;
+        const genreYearDF = new dfd.DataFrame({'release_date': releaseDate});
         const total = [];
+
+        genreYearDF.addColumn('genres', genre, {inplace: true})
+
+        // grabs the years from the date column of the csv file
+        for (let i = 0; i < releaseDate.length; i++) {
+          const input = releaseDate[i].split('/');
+          const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
+          const year = dateObject.getFullYear();
+
+          /*
+          Need to have each genre have its own set
+          For each genre set, loop and get total for each year
+          Will make an interactive table by choosing which genre and will show a chart showing years as the x axis
+            and how much games of the selected genre was released for each year as the y axis
+          */
+
+          /*
+          for (let z = 0; z < genre.length; z++) {
+
+          }
+          releaseDate[i] = year;
+
+          */
+        }
+
         console.log(genre);
+        console.log(releaseDate);
 
         // handles splitting games with multiple genres
         for (let i = 0; i < genre.length; i++) {
@@ -29,7 +58,7 @@ inputFile.addEventListener("change", async () => {
 
 
         uniqGenres.forEach(doWork); // totals up each genres
-        t.sort((a, b) =>
+        t.sort((a, b) => // sorts the genres by size
             Object.values(a)[0] < Object.values(b)[0] ? 1 : Object.values(a)[0] > Object.values(b)[0] ? -1 : 0)
         const x = [];
         const y = [];

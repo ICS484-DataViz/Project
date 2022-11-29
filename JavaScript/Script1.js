@@ -9,7 +9,6 @@ inputFile.addEventListener("change", async () => {
     const excelFile = inputFile.files[0]
     // Do all the work in here
     dfd.readExcel(excelFile).then((df) => {
-        const tittle = df.name.getColumnData;
         const title = df.name.getColumnData;
         const genre = df.genres.getColumnData;
         const total = [];

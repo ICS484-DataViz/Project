@@ -10,14 +10,15 @@ inputFile.addEventListener("change", async () => {
     // Do all the work in here
     dfd.readExcel(excelFile).then((df) => {
         const tittle = df.name.getColumnData;
+        const title = df.name.getColumnData;
         const genre = df.genres.getColumnData;
         const total = [];
         console.log(genre);
 
-        // handles spliting games with multiple genres
+        // handles splitting games with multiple genres
         for (let i = 0; i < genre.length; i++) {
             const temp = genre[i].split(';'); // splits ["genreA;genreB"] --> ['genreA', 'genreB']
-            if (temp.length > 1) { // if has multiple gerne
+            if (temp.length > 1) { // if has multiple genre
                 for (let x = 0; x < temp.length; x++) {
                     dummy.push(temp[x]); // push each individually into dummy
                 }
@@ -29,6 +30,8 @@ inputFile.addEventListener("change", async () => {
 
 
         uniqGenres.forEach(doWork); // totals up each genres
+        t.sort((a, b) =>
+            Object.values(a)[0] < Object.values(b)[0] ? 1 : Object.values(a)[0] > Object.values(b)[0] ? -1 : 0)
         const x = [];
         const y = [];
         for (let a = 0; a < t.length; a++) {
@@ -64,14 +67,14 @@ inputFile.addEventListener("change", async () => {
 
 
         const layout = {
-            title: 'Steam Games Data',
+            title: 'Steam Games Data by Genres(Bar)',
             showlegend: false,
             height: 900,
             width: 1000
         };
 
         const table_layout = {
-            title: 'Steam Games Data',
+            title: 'Steam Games Data by Genres(Table)',
             height: 900,
             width: 1000
         };

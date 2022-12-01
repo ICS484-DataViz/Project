@@ -62,7 +62,7 @@ inputFile.addEventListener("change", async () => {
             Object.values(a)[0] < Object.values(b)[0] ? 1 : Object.values(a)[0] > Object.values(b)[0] ? -1 : 0)
         const x = [];
         const y = [];
-        for (let a = 0; a < t.length; a++) {
+        for (let a = 0; a < 13; a++) {
             x.push(Object.keys(t[a]).toString());
             y.push(Object.values(t[a])[0]);
         }

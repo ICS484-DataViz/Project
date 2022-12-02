@@ -3,7 +3,10 @@ TABLE = document.getElementById('myTable');
 const inputFile = document.querySelector('#file');
 const t = []; // holds the total for each genres
 const dummy = []; // temp holder
-
+const multiplayer = [];
+const multiplayerTotal = [];
+const singleplayer = [];
+const singleplayerTotal = [];
 
 inputFile.addEventListener("change", async () => {
     const excelFile = inputFile.files[0]
@@ -13,16 +16,119 @@ inputFile.addEventListener("change", async () => {
         const id = df.appid.getColumnData;
         const genre = df.genres.getColumnData;
         const releaseDate = df.release_date.getColumnData;
-        const genreYearDF = new dfd.DataFrame({'release_date': releaseDate});
-        const total = [];
+        //const multiYearDF = new dfd.DataFrame({'release_date': releaseDate});
+        const categories = df.categories.getColumnData;
+        // let multiplayerDF = null;
+        let counter = 0;
+        //multiplayerDF.print();
 
-        genreYearDF.addColumn('genres', genre, {inplace: true})
+        // genreYearDF.addColumn('genres', genre, {inplace: true})
 
         // grabs the years from the date column of the csv file
         for (let i = 0; i < releaseDate.length; i++) {
           const input = releaseDate[i].split('/');
+          const temp = categories[i].split(';');
           const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
           const year = dateObject.getFullYear();
+          let holder = null;
+          if (temp.length > 1) {
+            for (let x = 0; x < temp.length; x++) {
+              if (temp[x] === 'Multi-player') {
+                // holder = temp[x];
+                multiplayer.push(year);
+              }
+            }
+          }
+        }
+
+        const uniqYearMultiplayer = new Set(multiplayer);
+        uniqYearMultiplayer.forEach(doWorkMultiplayer);
+        multiplayerTotal.sort((a, b) => // sorts the genres by size
+            Object.keys(a) > Object.keys(b) ? 1 : Object.keys(a) < Object.keys(b) ? -1 : 0)
+        console.log(multiplayerTotal);
+
+        const multiplayerX = [];
+        const multiplayerY = [];
+        for (let a = 0; a < multiplayerTotal.length; a++) {
+          multiplayerX.push(Object.keys(multiplayerTotal[a]).toString());
+          multiplayerY.push(Object.values(multiplayerTotal[a])[0]);
+        }
+
+        const multiplayerTrace = {
+          x: multiplayerX,
+          y: multiplayerY,
+          mode: 'lines+markers',
+          name: 'Multi-player'
+        };
+
+        for (let i = 0; i < releaseDate.length; i++) {
+          const input = releaseDate[i].split('/');
+          const temp = categories[i].split(';');
+          const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
+          const year = dateObject.getFullYear();
+          if (temp.length > 1) {
+            for (let x = 0; x < temp.length; x++) {
+              if (temp[x] === 'Single-player') {
+                singleplayer.push(year);
+              }
+            }
+          }
+        }
+
+      const uniqYearSingleplayer = new Set(singleplayer);
+      uniqYearSingleplayer.forEach(doWorkSingleplayer);
+      singleplayerTotal.sort((a, b) => // sorts the genres by size
+          Object.keys(a) > Object.keys(b) ? 1 : Object.keys(a) < Object.keys(b) ? -1 : 0)
+      console.log(singleplayerTotal);
+
+      const singleplayerX = [];
+      const singleplayerY = [];
+      for (let a = 0; a < singleplayerTotal.length; a++) {
+        singleplayerX.push(Object.keys(singleplayerTotal[a]).toString());
+        singleplayerY.push(Object.values(singleplayerTotal[a])[0]);
+      }
+
+      const singleplayerTrace = {
+        x: singleplayerX,
+        y: singleplayerY,
+        mode: 'lines+markers',
+        name: 'Single-player'
+      };
+
+          /*
+          if (holder != null) {
+            if (counter == 0) {
+              multiplayerDF = new dfd.DataFrame([[year, holder]]);
+              // multiplayerDF.print();
+              counter++;
+              holder = null;
+            }
+            else {
+              multiplayerDF = multiplayerDF.append([[year, holder]], [counter]);
+              counter++;
+              holder = null;
+            }
+          }
+        }
+
+        multiplayerDF.sortValues('0', {inplace: true});
+
+        console.log(multiplayerDF);
+
+        */
+
+        /*
+        for (let i = 0; i < categories.length; i++) {
+          const temp = categories[i].split(';');
+          if (temp.length > 1) {
+            for (let x = 0; x < temp.length; x++) {
+              if (temp.length[x] === 'Multi-player') {
+
+              }
+            }
+          }
+        }
+        */
 
           /*
           Need to have each genre have its own set
@@ -38,10 +144,9 @@ inputFile.addEventListener("change", async () => {
           releaseDate[i] = year;
 
           */
-        }
 
-        console.log(genre);
-        console.log(releaseDate);
+        // console.log(genre);
+        // console.log(releaseDate);
 
         // handles splitting games with multiple genres
         for (let i = 0; i < genre.length; i++) {
@@ -107,10 +212,23 @@ inputFile.addEventListener("change", async () => {
             width: 1000
         };
 
+        const scatterLayout = {
+          title: 'Single-player Vs Multi-player Release Count by Years',
+          xaxis: {
+            title: 'Years'
+          },
+          yaxis: {
+            title: 'Count'
+          },
+          hovermode: 'x unified'
+        }
+
         const data = [trace1];
         const tableData = [table1];
+        const scatterData = [multiplayerTrace, singleplayerTrace];
         Plotly.newPlot('myDiv', data, layout);
         Plotly.newPlot(TABLE, tableData, table_layout);
+        Plotly.newPlot('scatterDiv', scatterData, scatterLayout);
     })
 })
 
@@ -121,6 +239,22 @@ const doWork = (value) => {
     const data = {}; // temp holder
     data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
     t.push(data);
+};
+
+const doWorkMultiplayer = (value) => {
+  const temp = multiplayer.filter(item => item === value); // find the all genre === value from dummy
+  const name = temp[0]; // gets the name of that genre
+  const data = {}; // temp holder
+  data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
+  multiplayerTotal.push(data);
+};
+
+const doWorkSingleplayer = (value) => {
+  const temp = singleplayer.filter(item => item === value); // find the all genre === value from dummy
+  const name = temp[0]; // gets the name of that genre
+  const data = {}; // temp holder
+  data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
+  singleplayerTotal.push(data);
 };
 
 

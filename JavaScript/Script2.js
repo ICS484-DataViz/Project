@@ -39,7 +39,7 @@ const data = [];
     const dataRatingPos = data.sort(sortPosRating);
     const mostPopularGames = dataRatingPos.filter((items) => ((items.PosRating / items.totalRatings) * 100) >= 80); // if at least 80% of total reviews is pos
     const dataRatingsNeg = data.sort(sortNegRating);
-    const leastPopularGames = dataRatingsNeg.filter((items) => ((items.PosRating / items.totalRatings) * 100) <= 60); // if rating is less than 39 then its least liked
+    const leastPopularGames = dataRatingsNeg.filter((items) => ((items.PosRating / items.totalRatings) * 100) <= 39); // if rating is less than 39 then its least liked
 
     console.log("Most Pop: ", mostPopularGames);
     const topGames = mostPopularGames.slice(0, 10);

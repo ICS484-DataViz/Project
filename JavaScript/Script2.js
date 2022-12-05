@@ -1,8 +1,10 @@
 const data = [];
+const inputFiles = document.querySelector('#file');
 
-
-    // Do all the work in here
-  dfd.readCSV('../../DataStuff/steam.csv').then((df) => {
+inputFiles.addEventListener("change", async () => {
+  const excelFile = inputFile.files[0];
+  // Do all the work in here
+  dfd.readCSV(excelFile).then((df) => {
     console.log(df);
     const tempDate = [];
     const games = df.name.getColumnData;
@@ -11,7 +13,7 @@ const data = [];
     const releaseDate = df.release_date.getColumnData;
     const publisher = df.publisher.getColumnData;
     releaseDate.forEach(function (dates) {
-       tempDate.push(new Date(dates).getFullYear());
+      tempDate.push(new Date(dates).getFullYear());
     })
     const getYearsOnly = tempDate;
     const tempData = games.map((element, index) => {
@@ -56,9 +58,9 @@ const data = [];
 
     const trace1 = [
       {
-          x: nameOfGame,
-          y: gamesPosRatings,
-          type: 'bar',
+        x: nameOfGame,
+        y: gamesPosRatings,
+        type: 'bar',
         name: 'Positive Ratings'
       },
       {
@@ -109,6 +111,9 @@ const data = [];
     Plotly.newPlot('MostLikedGames', trace1, layout1);
     Plotly.newPlot('MostHatedGames', trace2, layout2);
   });
+});
+
+
 
 
 

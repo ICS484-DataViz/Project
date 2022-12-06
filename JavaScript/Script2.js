@@ -90,7 +90,7 @@ inputFiles.addEventListener("change", async () => {
       title: 'Top 10 Popular Games',
       showlegend: true,
       height: 1100,
-      width: 1000,
+      width: 900,
       xaxis: {
         tickangle: -45,
         text: 'Games'
@@ -101,7 +101,7 @@ inputFiles.addEventListener("change", async () => {
       title: 'Top 10 Least Popular Games',
       showlegend: true,
       height: 1100,
-      width: 1000,
+      width: 900,
       xaxis: {
         tickangle: -45,
         text: 'Games'

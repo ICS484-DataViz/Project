@@ -30,13 +30,16 @@ inputFile.addEventListener("change", async () => {
       const temp = categories[i].split(';');
       const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
       const year = dateObject.getFullYear();
-      let holder = null;
       if (temp.length > 1) {
         for (let x = 0; x < temp.length; x++) {
-          if (temp[x] === 'Multi-player') {
-            // holder = temp[x];
+          if (temp[x] === 'Multi-player' || 'Online Multi-Player' || 'Local Multi-Player') {
             multiplayer.push(year);
+            break;
           }
+        }
+      } else if (temp.length === 1) {
+        if (temp[0] === 'Multi-player' || 'Online Multi-Player' || 'Local Multi-Player') {
+          multiplayer.push(year);
         }
       }
     }
@@ -72,8 +75,14 @@ inputFile.addEventListener("change", async () => {
             singleplayer.push(year);
           }
         }
+      } else if (temp.length == 1) {
+        if (temp[0] === 'Single-player') {
+          singleplayer.push(year);
+        }
       }
     }
+
+    console.log(singleplayer);
 
     const uniqYearSingleplayer = new Set(singleplayer);
     uniqYearSingleplayer.forEach(doWorkSingleplayer);

@@ -7,6 +7,10 @@ const multiplayer = [];
 const multiplayerTotal = [];
 const singleplayer = [];
 const singleplayerTotal = [];
+const owner = [];
+const ownerTotal = [];
+const ownerSingle = [];
+const ownerSingleTotal = [];
 
 // Do all the work in here
 inputFile.addEventListener("change", async () => {
@@ -16,13 +20,30 @@ inputFile.addEventListener("change", async () => {
     const id = df.appid.getColumnData;
     const genre = df.genres.getColumnData;
     const releaseDate = df.release_date.getColumnData;
-    //const multiYearDF = new dfd.DataFrame({'release_date': releaseDate});
     const categories = df.categories.getColumnData;
-    // let multiplayerDF = null;
-    let counter = 0;
-    //multiplayerDF.print();
+    const owners = df.owners.getColumnData;
 
     // genreYearDF.addColumn('genres', genre, {inplace: true})
+
+    for (let i = 0; i < releaseDate.length; i++) {
+      const input = releaseDate[i].split('/');
+      const temp = categories[i].split(';');
+      const ownerTemp = owners[i].split('-');
+      const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
+      const year = dateObject.getFullYear();
+      if (temp.length > 1) {
+        for (let x = 0; x < temp.length; x++) {
+          if (temp[x] === 'Multi-player' || 'Online Multi-Player' || 'Local Multi-Player') {
+            owner.push({'year': year, 'owners': ownerTemp[0]});
+            break;
+          }
+        }
+      } else if (temp.length === 1) {
+        if (temp[0] === 'Multi-player' || 'Online Multi-Player' || 'Local Multi-Player') {
+          owner.push({'year': year, 'owners': ownerTemp[0]});
+        }
+      }
+    }
 
     // grabs the years from the date column of the csv file
     for (let i = 0; i < releaseDate.length; i++) {
@@ -64,6 +85,50 @@ inputFile.addEventListener("change", async () => {
       name: 'Multi-player'
     };
 
+    uniqYearMultiplayer.forEach(doWorkMultiOwner);
+    console.log(ownerTotal);
+    ownerTotal.sort((a, b) => // sorts the genres by size
+        Object.keys(a) > Object.keys(b) ? 1 : Object.keys(a) < Object.keys(b) ? -1 : 0)
+    console.log(ownerTotal);
+
+    const ownerMultiX = [];
+    const ownerMultiY = [];
+
+    for (let a = 0; a < ownerTotal.length; a++) {
+      ownerMultiX.push(Object.keys(ownerTotal[a]).toString());
+      ownerMultiY.push(Object.values(ownerTotal[a])[0]);
+    }
+
+    const ownerMultiTrace = {
+      x: ownerMultiX,
+      y: ownerMultiY,
+      mode: 'lines+marker',
+      name: 'Multi-player Owners',
+      line: {
+        dash: 'dot',
+        width: 4
+      }
+    }
+
+    for (let i = 0; i < releaseDate.length; i++) {
+      const input = releaseDate[i].split('/');
+      const temp = categories[i].split(';');
+      const ownerTemp = owners[i].split('-');
+      const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
+      const year = dateObject.getFullYear();
+      if (temp.length > 1) {
+        for (let x = 0; x < temp.length; x++) {
+          if (temp[x] === 'Single-player') {
+            ownerSingle.push({'year': year, 'owners': ownerTemp[0]});
+          }
+        }
+      } else if (temp.length === 1) {
+        if (temp[0] === 'Single-player') {
+          ownerSingle.push({'year': year, 'owners': ownerTemp[0]});
+        }
+      }
+    }
+
     for (let i = 0; i < releaseDate.length; i++) {
       const input = releaseDate[i].split('/');
       const temp = categories[i].split(';');
@@ -103,6 +168,31 @@ inputFile.addEventListener("change", async () => {
       mode: 'lines+markers',
       name: 'Single-player'
     };
+
+    uniqYearSingleplayer.forEach(doWorkSingleOwner);
+    console.log(ownerSingleTotal);
+    ownerSingleTotal.sort((a, b) => // sorts the genres by size
+        Object.keys(a) > Object.keys(b) ? 1 : Object.keys(a) < Object.keys(b) ? -1 : 0)
+    //console.log(ownerTotal);
+
+    const ownerSingleX = [];
+    const ownerSingleY = [];
+
+    for (let a = 0; a < ownerSingleTotal.length; a++) {
+      ownerSingleX.push(Object.keys(ownerSingleTotal[a]).toString());
+      ownerSingleY.push(Object.values(ownerSingleTotal[a])[0]);
+    }
+
+    const ownerSingleTrace = {
+      x: ownerSingleX,
+      y: ownerSingleY,
+      mode: 'lines+marker',
+      name: 'Single-player Owners',
+      line: {
+        dash: 'dot',
+        width: 4
+      }
+    }
 
     /*
     if (holder != null) {
@@ -229,15 +319,30 @@ inputFile.addEventListener("change", async () => {
       },
       hovermode: 'x unified',
       height: 900,
-      width: 1000
+      width: 800,
+    }
+
+    const scatterOwnerLayout = {
+      title: 'Single-player Vs Multi-player Owner Count by Years',
+      xaxis: {
+        title: 'Years'
+      },
+      yaxis: {
+        title: 'Count'
+      },
+      hovermode: 'x unified',
+      height: 900,
+      width: 800
     }
 
     const data = [trace1];
     const tableData = [table1];
     const scatterData = [multiplayerTrace, singleplayerTrace];
+    const scatterOwnerData = [ownerMultiTrace, ownerSingleTrace];
     Plotly.newPlot('myDiv', data, layout);
     Plotly.newPlot(TABLE, tableData, table_layout);
     Plotly.newPlot('scatterDiv', scatterData, scatterLayout);
+    Plotly.newPlot('scatterOwnerDiv', scatterOwnerData, scatterOwnerLayout);
   })
 
 });
@@ -259,12 +364,32 @@ const doWorkMultiplayer = (value) => {
   multiplayerTotal.push(data);
 };
 
+const doWorkMultiOwner = (value) => {
+  const temp = owner.filter(item => item.year === value);
+  console.log(temp);
+  const name = value;
+  const data = {};
+  //console.log(Object.values());
+  data[name] = temp.reduce((total, current) => Number(total) + Number(current.owners), 0);
+  ownerTotal.push(data);
+};
+
 const doWorkSingleplayer = (value) => {
   const temp = singleplayer.filter(item => item === value); // find the all genre === value from dummy
   const name = temp[0]; // gets the name of that genre
   const data = {}; // temp holder
   data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
   singleplayerTotal.push(data);
+};
+
+const doWorkSingleOwner = (value) => {
+  const temp = ownerSingle.filter(item => item.year === value);
+  console.log(temp);
+  const name = value;
+  const data = {};
+  //console.log(Object.values());
+  data[name] = temp.reduce((total, current) => Number(total) + Number(current.owners), 0);
+  ownerSingleTotal.push(data);
 };
 
 

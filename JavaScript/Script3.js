@@ -1,70 +1,83 @@
-const data = [];
+const inputFileMac = document.querySelector('#file');
+const dataMac = [];
+const mac = [];
+const macTotal = [];
 
+inputFileMac.addEventListener("change", async () => {
+  const excelFile = inputFileMac.files[0];
 
-// Do all the work in here
-dfd.readCSV('../../DataStuff/steam.csv').then((df) => {
-  console.log(df);
-  const tempDate = [];
-  const games = df.name.getColumnData;
-  const posRating = df.positive_ratings.getColumnData;
-  const negRating = df.negative_ratings.getColumnData;
-  const releaseDate = df.release_date.getColumnData;
-  const publisher = df.publisher.getColumnData;
-  releaseDate.forEach(function (dates) {
-    tempDate.push(new Date(dates).getFullYear());
+  dfd.readCSV('../../DataStuff/steam.csv').then((df) => {
+    const tempDate = [];
+    const games = df.name.getColumnData;
+    const releaseDate = df.release_date.getColumnData;
+    const platform = df.platform.getColumnData;
+    releaseDate.forEach(function (dates) {
+      tempDate.push(new Date(dates).getFullYear());
+    })
+    console.log(tempDate);
+    const getYearsOnly = tempDate;
+    const tempData = games.map((element, index) => {
+      return [games[index], getYearsOnly[index], platform[index]];
+    });
+
+    console.log(getYearsOnly);
+
+    tempData.forEach(function (elements) {
+      const temp = {};
+      Object.assign(temp, elements);
+      temp['title'] = temp[0];
+      temp['LaunchYear'] = temp[1];
+      temp['Platform'] = temp[2];
+      delete temp[0];
+      delete temp[1];
+      delete temp[2];
+
+      dataMac.push(temp);
+    });
+
+    const uniqYearMac = new Set(mac);
+    uniqYearMac.forEach(doWorkMac);
+    macTotal.sort((a, b) => // sorts the genres by size
+        Object.keys(a) > Object.keys(b) ? 1 : Object.keys(a) < Object.keys(b) ? -1 : 0)
+    console.log(macTotal);
+
+    const macX = [];
+    const macY = [];
+    for (let i = 0; i < macTotal.length; i++) {
+      macX.push(Object.keys(macTotal[i]).toString());
+      macY.push(Object.values(macTotal[i])[0]);
+    }
+
+    const macTrace = {
+      x: macX,
+      y: macY,
+      mode: 'lines+markers',
+      name: 'Mac'
+    };
+
+    const macLayout = {
+      title: 'Mac Games Throughout the Year',
+      xaxis: {
+        title: 'Years'
+      },
+      yaxis: {
+        title: 'Mac'
+      },
+      hovermode: 'x unified',
+      height: 900,
+      width: 1000
+    }
+
+    Plotly.newPlot('MacGames', macTrace, macLayout1);
   })
-  const getYearsOnly = tempDate;
-  const tempData = games.map((element, index) => {
-    return [games[index], posRating[index], negRating[index], getYearsOnly[index], publisher[index]];
-  });
 
-  // grabs the years from the date column of the csv file
-  for (let i = 0; i < releaseDate.length; i++) {
-    const input = releaseDate[i].split('/');
-    const temp = categories[i].split(';');
-    const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
-    const year = dateObject.getFullYear();
-    let holder = null;
-    if (temp.length > 1) {
-      for (let x = 0; x < temp.length; x++) {
-        if (temp[x] === 'Multi-player') {
-          // holder = temp[x];
-          multiplayer.push(year);
-        }
-      }
-    }
-  }
-
-  const nameOfGame = topGames.map((items) => items.title);
-  const gamesPosRatings = topGames.map((items) => items.PosRating);
-  const gamesNegRatings = topGames.map((items) => items.NegRating);
-
-  const trace1 = [
-    {
-      x: years,
-      y: macGames,
-      type: 'line',
-      name: 'Mac Games vs Years'
-    },
-    {
-      x: years,
-      y: macGames,
-      type: 'line',
-      name: 'Mac Games vs Years'
-    }
-  ];
-
-  const layout1 = {
-    title: 'Mac Game Throughout the Year',
-    showlegend: true,
-    height: 1100,
-    width: 1000,
-    xaxis: {
-      tickangle: -45,
-      text: 'Games'
-    }
-  };
-
-  Plotly.newPlot('MacGames', trace1, layout1);
 });
+
+const doWorkMac = (value) => {
+  const temp = mac.filter(item => item === value); // find the all genre === value from dummy
+  const name = temp[0]; // gets the name of that genre
+  const data = {}; // temp holder
+  data[name] = temp.length; // asigns data = { 'genreName' : total number of genre}
+  macTotal.push(data);
+};
 

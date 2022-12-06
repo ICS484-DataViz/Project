@@ -125,6 +125,9 @@ getInput.addEventListener("change", async () => {
             newData.push(temp);
         });
         const gens = Array.from(uniqGenres);
+        const pubs = Array.from(uniqPublisher);
+        const devs = Array.from(uniqDeveloper);
+
         const d = gens;
         // Remove Indie, since indie is the most common genre
         for (let i = 0; i < gens.length; i++) {
@@ -138,6 +141,8 @@ getInput.addEventListener("change", async () => {
         let counter = 0;
         const publisherWithGen = [];
         let testingGen = [];
+        let a = [];
+        let a_counter = 0;
         const mainTEstGen = [];
         console.log(newData);
 
@@ -151,6 +156,7 @@ getInput.addEventListener("change", async () => {
                     testingGen.push(params);
                 }
             });
+           
             mainTEstGen.push(testingGen);
             publisherWithGen.push(counter);
 
@@ -160,18 +166,37 @@ getInput.addEventListener("change", async () => {
 
         // gets games with indie
         let newCounter = [];
+        let devCounter = [];
         mainTEstGen.forEach(function (element) {
             let c = 0;
+            a_counter = 0;
+            let dev_counter = 0;
             element.forEach(function (items) {
+                for (let i = 0; i < d.length; i++) {
+
+                    if (items.Genres.find((item) => item === d[i])) {
+                        a_counter += items.Publisher.length;
+    
+                    }
+                    if (items.Genres.find((item) => item === d[i])) {
+                        dev_counter += items.Developer.length;
+
+                    }
+                  
+        
+                }
+    
                 if (items.Genres.find((item) => item === 'Indie')) {
                     c++;
+                    
                 }
             });
+            a.push(a_counter);
+            devCounter.push(dev_counter);
             newCounter.push(c);
         });
 
 
-        console.log(publisherWithGen, mainTEstGen, newCounter);
 
 
         const graph = [
@@ -187,10 +212,23 @@ getInput.addEventListener("change", async () => {
                 y: newCounter,
                 name: 'Indie Subgenre',
             },
+            {
+                type: 'bar',
+                x: gens,
+                y: a,
+                name: 'Publisher',
+            },
+            {
+                type: 'bar',
+                x: gens,
+                y: devCounter,
+                name: 'Developers',
+            },
         ];
 
         const myLayout = {
             title: 'Number of Games per Genres',
+            wdith: 1000,
             font: {
                 family: 'Raleway, sans-serif'
             },

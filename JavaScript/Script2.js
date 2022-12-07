@@ -94,7 +94,18 @@ inputFiles.addEventListener("change", async () => {
       xaxis: {
         tickangle: -45,
         text: 'Games'
-      }
+      },
+      yaxis: {
+        title: 'Number of Rating',
+        titlefont: {
+          size: 16,
+          color: 'rgb(107, 107, 107)'
+        },
+        tickfont: {
+          size: 14,
+          color: 'rgb(107, 107, 107)'
+        }
+      },
     };
 
     const layout2 = {
@@ -105,7 +116,18 @@ inputFiles.addEventListener("change", async () => {
       xaxis: {
         tickangle: -45,
         text: 'Games'
-      }
+      },
+      yaxis: {
+        title: 'Number of Rating',
+        titlefont: {
+          size: 16,
+          color: 'rgb(107, 107, 107)'
+        },
+        tickfont: {
+          size: 14,
+          color: 'rgb(107, 107, 107)'
+        }
+      },
     };
 
     Plotly.newPlot('MostLikedGames', trace1, layout1);

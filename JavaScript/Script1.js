@@ -371,7 +371,7 @@ console.log(multiplayerDF);
   }
 
   const genreOwnerLayout = {
-    title: 'Popular Genres by Owner Count',
+    title: 'Genres by Owner Count',
     xaxis: {
       title: 'Genres'
     },

@@ -106,7 +106,7 @@ inputFileMac.addEventListener("change", async () => {
     const averageLayout = {
       title: 'Top 10 Games with the Highest Average Playtime',
       showlegend: true,
-      height: 1100,
+      height: 800,
       yaxis: {
         title: 'Average Playtime in Minutes',
       },

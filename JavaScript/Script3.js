@@ -107,13 +107,11 @@ inputFileMac.addEventListener("change", async () => {
       title: 'Top 10 Games with the Highest Average Playtime',
       showlegend: true,
       height: 1100,
-      width: 900,
       yaxis: {
-        title: 'Average Playtime in Hours',
+        title: 'Average Playtime in Minutes',
       },
       xaxis: {
         title: 'Top 10 Games',
-        tickangle: -45,
         text: 'Games'
     }}
 

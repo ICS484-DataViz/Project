@@ -109,7 +109,7 @@ inputFileMac.addEventListener("change", async () => {
       height: 1100,
       width: 900,
       yaxis: {
-        title: 'Average Playtime in Minutes',
+        title: 'Average Playtime in Hours',
       },
       xaxis: {
         title: 'Top 10 Games',

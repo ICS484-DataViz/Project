@@ -11,16 +11,6 @@ inputFileMac.addEventListener("change", async () => {
     const games = df.name.getColumnData;
     const releaseDate = df.release_date.getColumnData;
     const platform = df.platforms.getColumnData;
-    // releaseDate.forEach(function (dates) {
-    //   tempDate.push(new Date(dates).getFullYear());
-    // })
-    // console.log(tempDate);
-    // const getYearsOnly = tempDate;
-    // const tempData = games.map((element, index) => {
-    //   return [games[index], getYearsOnly[index], platform[index]];
-    // });
-    //
-    // console.log(getYearsOnly);
 
     // grabs the years from the date column of the csv file
     for (let i = 0; i < releaseDate.length; i++) {
@@ -38,20 +28,6 @@ inputFileMac.addEventListener("change", async () => {
       }
     }
 
-    //
-    // tempData.forEach(function (elements) {
-    //   const temp = {};
-    //   Object.assign(temp, elements);
-    //   temp['title'] = temp[0];
-    //   temp['LaunchYear'] = temp[1];
-    //   temp['Platform'] = temp[2];
-    //   delete temp[0];
-    //   delete temp[1];
-    //   delete temp[2];
-    //
-    //   dataMac.push(temp);
-    // });
-
     const uniqYearMac = new Set(mac);
     uniqYearMac.forEach(doWorkMac);
     macTotal.sort((a, b) => // sorts the genres by size
@@ -64,9 +40,6 @@ inputFileMac.addEventListener("change", async () => {
       macX.push(Object.keys(macTotal[i]).toString());
       macY.push(Object.values(macTotal[i])[0]);
     }
-
-    // console.log(macX);
-    // console.log(macY);
 
     const macTrace = [{
       x: macX,

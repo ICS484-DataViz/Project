@@ -217,7 +217,7 @@ getNewInput.addEventListener("change", async () => {
 
     const layout = {barmode: 'stack'};
 
-    Plotly.newPlot('testRee', data, layout);
+   // Plotly.newPlot('testRee', data, layout);
 
     const revGrap = [
       {

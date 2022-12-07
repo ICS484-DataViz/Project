@@ -6,34 +6,51 @@ const macTotal = [];
 inputFileMac.addEventListener("change", async () => {
   const excelFile = inputFileMac.files[0];
 
-  dfd.readCSV('../../DataStuff/steam.csv').then((df) => {
+  dfd.readCSV(excelFile).then((df) => {
     const tempDate = [];
     const games = df.name.getColumnData;
     const releaseDate = df.release_date.getColumnData;
-    const platform = df.platform.getColumnData;
-    releaseDate.forEach(function (dates) {
-      tempDate.push(new Date(dates).getFullYear());
-    })
-    console.log(tempDate);
-    const getYearsOnly = tempDate;
-    const tempData = games.map((element, index) => {
-      return [games[index], getYearsOnly[index], platform[index]];
-    });
+    const platform = df.platforms.getColumnData;
+    // releaseDate.forEach(function (dates) {
+    //   tempDate.push(new Date(dates).getFullYear());
+    // })
+    // console.log(tempDate);
+    // const getYearsOnly = tempDate;
+    // const tempData = games.map((element, index) => {
+    //   return [games[index], getYearsOnly[index], platform[index]];
+    // });
+    //
+    // console.log(getYearsOnly);
 
-    console.log(getYearsOnly);
+    // grabs the years from the date column of the csv file
+    for (let i = 0; i < releaseDate.length; i++) {
+      const input = releaseDate[i].split('/');
+      const temp = platform[i].split(';');
+      const dateObject = new Date(input[2] + '-' + input[0] + '-' + input[1]);
+      const year = dateObject.getFullYear();
+      let holder = null;
+      if (temp.length > 1) {
+        for (let x = 0; x < temp.length; x++) {
+          if (temp[x] === 'mac') {
+            mac.push(year);
+          }
+        }
+      }
+    }
 
-    tempData.forEach(function (elements) {
-      const temp = {};
-      Object.assign(temp, elements);
-      temp['title'] = temp[0];
-      temp['LaunchYear'] = temp[1];
-      temp['Platform'] = temp[2];
-      delete temp[0];
-      delete temp[1];
-      delete temp[2];
-
-      dataMac.push(temp);
-    });
+    //
+    // tempData.forEach(function (elements) {
+    //   const temp = {};
+    //   Object.assign(temp, elements);
+    //   temp['title'] = temp[0];
+    //   temp['LaunchYear'] = temp[1];
+    //   temp['Platform'] = temp[2];
+    //   delete temp[0];
+    //   delete temp[1];
+    //   delete temp[2];
+    //
+    //   dataMac.push(temp);
+    // });
 
     const uniqYearMac = new Set(mac);
     uniqYearMac.forEach(doWorkMac);
@@ -48,12 +65,15 @@ inputFileMac.addEventListener("change", async () => {
       macY.push(Object.values(macTotal[i])[0]);
     }
 
-    const macTrace = {
+    // console.log(macX);
+    // console.log(macY);
+
+    const macTrace = [{
       x: macX,
       y: macY,
       mode: 'lines+markers',
       name: 'Mac'
-    };
+    }];
 
     const macLayout = {
       title: 'Mac Games Throughout the Year',
@@ -68,7 +88,8 @@ inputFileMac.addEventListener("change", async () => {
       width: 1000
     }
 
-    Plotly.newPlot('MacGames', macTrace, macLayout1);
+
+    Plotly.newPlot('MacGames', macTrace, macLayout);
   })
 
 });

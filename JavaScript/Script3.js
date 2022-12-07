@@ -90,7 +90,7 @@ inputFileMac.addEventListener("change", async () => {
         title: 'Mac'
       },
       hovermode: 'x unified',
-      height: 900,
+      height: 700,
       width: 1000
     }
 

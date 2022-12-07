@@ -354,7 +354,7 @@ inputFile.addEventListener("change", async () => {
       },
       hovermode: 'x unified',
       height: 900,
-      width: 800,
+      width: 900,
     }
 
     const scatterOwnerLayout = {
@@ -367,7 +367,7 @@ inputFile.addEventListener("change", async () => {
       },
       hovermode: 'x unified',
       height: 900,
-      width: 800
+      width: 900
     }
 
     const genreOwnerLayout = {
@@ -378,7 +378,7 @@ inputFile.addEventListener("change", async () => {
       yaxis: {
         title: 'Owners'
       },
-      height: 900
+      width: 900
     }
 
     //const data = [trace1];

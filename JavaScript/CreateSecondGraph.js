@@ -228,7 +228,7 @@ getInput.addEventListener("change", async () => {
 
         const myLayout = {
             title: 'Number of Games per Genres',
-            wdith: 1000,
+            width: 1800,
             font: {
                 family: 'Raleway, sans-serif'
             },

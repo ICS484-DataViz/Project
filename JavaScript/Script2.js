@@ -1,10 +1,10 @@
 const data = [];
 const inputFiles = document.querySelector('#file');
 
-inputFiles.addEventListener("change", async () => {
-  const excelFile = inputFile.files[0];
+
+  //const excelFile = inputFile.files[0];
   // Do all the work in here
-  dfd.readCSV(excelFile).then((df) => {
+  dfd.readCSV('../DataStuff/steam.csv').then((df) => {
     console.log(df);
     const tempDate = [];
     const games = df.name.getColumnData;
@@ -133,7 +133,7 @@ inputFiles.addEventListener("change", async () => {
     Plotly.newPlot('MostLikedGames', trace1, layout1);
     Plotly.newPlot('MostHatedGames', trace2, layout2);
   });
-});
+
 
 
 

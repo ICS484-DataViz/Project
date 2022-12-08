@@ -15,9 +15,9 @@ const genreOwners = [];
 const genreOwnersT =[];
 
 // Do all the work in here
-inputFile.addEventListener("change", async () => {
-  const excelFile = inputFile.files[0];
-  dfd.readCSV(excelFile).then((df) => {
+
+  //const excelFile = inputFile.files[0];
+  dfd.readCSV('../DataStuff/steam.csv').then((df) => {
     const title = df.name.getColumnData;
     const id = df.appid.getColumnData;
     const genre = df.genres.getColumnData;
@@ -393,7 +393,7 @@ inputFile.addEventListener("change", async () => {
     Plotly.newPlot('genreOwnersDiv', genreOwnerData, genreOwnerLayout);
   })
 
-});
+
 
 
 const doWork = (value) => {

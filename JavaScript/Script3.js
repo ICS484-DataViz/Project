@@ -3,10 +3,10 @@ const dataMac = [];
 const mac = [];
 const macTotal = [];
 
-inputFileMac.addEventListener("change", async () => {
-  const excelFile = inputFileMac.files[0];
 
-  dfd.readCSV(excelFile).then((df) => {
+  //const excelFile = inputFileMac.files[0];
+
+  dfd.readCSV('../DataStuff/steam.csv').then((df) => {
     console.log(df);
     const tempDate = [];
     const games = df.name.getColumnData;
@@ -119,7 +119,6 @@ inputFileMac.addEventListener("change", async () => {
     Plotly.newPlot('AveragePlay', averageTrace, averageLayout);
   })
 
-});
 
 const doWorkMac = (value) => {
   const temp = mac.filter(item => item === value); // find the all genre === value from dummy

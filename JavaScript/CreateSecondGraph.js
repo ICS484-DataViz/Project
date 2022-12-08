@@ -5,10 +5,10 @@ const newData = [];
 /**
  * This file will count the number of games with the genre, the games can be counted again if it has the genre.
  */
-getInput.addEventListener("change", async () => {
-    const excelFile = getInput.files[0];
+
+    //const excelFile = getInput.files[0];
     // Do all the work in here
-    dfd.readCSV(excelFile).then((df) => {
+    dfd.readCSV('../DataStuff/steam.csv').then((df) => {
         console.log(df);
         const tempDate = [];
         const games = df.name.getColumnData;
@@ -270,4 +270,3 @@ getInput.addEventListener("change", async () => {
 
 
     });
-});

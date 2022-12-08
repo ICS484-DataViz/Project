@@ -8,7 +8,7 @@ const newData = [];
 
     //const excelFile = getInput.files[0];
     // Do all the work in here
-    dfd.readCSV('../DataStuff/steam.csv').then((df) => {
+    dfd.readCSV('~buccatm/DataStuff/steam.csv').then((df) => {
         console.log(df);
         const tempDate = [];
         const games = df.name.getColumnData;

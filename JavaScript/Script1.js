@@ -17,7 +17,7 @@ const genreOwnersT =[];
 // Do all the work in here
 
   //const excelFile = inputFile.files[0];
-  dfd.readCSV('/DataStuff/steam.csv').then((df) => {
+  dfd.readCSV('./DataStuff/steam.csv').then((df) => {
     const title = df.name.getColumnData;
     const id = df.appid.getColumnData;
     const genre = df.genres.getColumnData;

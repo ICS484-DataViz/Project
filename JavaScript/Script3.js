@@ -82,7 +82,7 @@ inputFileMac.addEventListener("change", async () => {
     }];
 
     const macLayout = {
-      title: 'Mac Games Throughout the Year',
+      title: 'Mac Compatible Games Throughout the Years',
       xaxis: {
         title: 'Years'
       },

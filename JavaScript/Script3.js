@@ -6,7 +6,7 @@ const macTotal = [];
 
   //const excelFile = inputFileMac.files[0];
 
-  dfd.readCSV('~buccatm/DataStuff/steam.csv').then((df) => {
+  dfd.readCSV('/DataStuff/steam.csv').then((df) => {
     console.log(df);
     const tempDate = [];
     const games = df.name.getColumnData;
